@@ -44,7 +44,7 @@
 							<span style="margin:25px 15px 0 10px;"><font color="orange"><b>${sName}</b></font>님 환영합니다!</span>
 						</c:if>
 						<c:if test="${!empty sLevel}">
-							<a href="${ctp}/bookCheck.book" style="margin-bottom:24px; border-bottom: 1px solid #000;">BOOK NOW</a>
+							<a href="${ctp}/booking/bookingMenu" style="margin-bottom:24px; border-bottom: 1px solid #000;">BOOK NOW</a>
 						</c:if>
 						<c:if test="${empty sLevel}">
 							<a href="${ctp}/member/memberLogin" style="margin-bottom:24px; border-bottom: 1px solid #000;">BOOK NOW</a>
