@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.green2209S_14.dao.NoticeDAO">
+	
+	<select id="totRecCnt" resultType="int">
+		<!-- select count(*) from board2 where ${part} like concat('%',#{searchString},'%');  -->
+		select count(*) from notice;
+	</select>
+	
+	<!-- 전체리스트 불러온다 -->
+	<select id="getNoticeList" resultType="com.spring.green2209S_14.vo.NoticeVO">
+		<!-- SELECT *,datediff(now(), wDate) as day_diff, timestampdiff(hour, wDate, now()) as hour_diff FROM notice order by idx desc limit #{startIndexNo},#{pageSize}; -->
+		SELECT 	*,datediff(now(), wDate) as day_diff, timestampdiff(hour, wDate, now()) as hour_diff FROM notice order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	
+	<insert id="setNoticeInput">
+		insert into notice values (default,#{vo.name},#{vo.title},#{vo.content},default,default,default,#{vo.mid});
+	</insert>
+	
+	
+	
+
+</mapper>

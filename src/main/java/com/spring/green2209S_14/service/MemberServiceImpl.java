@@ -1,15 +1,11 @@
 package com.spring.green2209S_14.service;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.spring.green2209S_14.common.JavawspringProvide;
 import com.spring.green2209S_14.dao.MemberDAO;
 import com.spring.green2209S_14.vo.MemberVO;
 

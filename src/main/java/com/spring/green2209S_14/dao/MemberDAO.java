@@ -12,6 +12,10 @@ public interface MemberDAO {
 	
 	// 사진저장..?
 	public void setMemberJoinOk(@Param("vo") MemberVO vo);
+	
+	public int totRecCnt(@Param("vo") String searchString);
+
+
 
 
 }

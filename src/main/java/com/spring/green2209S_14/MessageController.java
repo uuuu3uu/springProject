@@ -43,6 +43,14 @@ public class MessageController {
 			model.addAttribute("msg", "중복된 닉네임 입니다");
 			model.addAttribute("url","member/memberJoin");
 		}
+		else if(msgFlag.equals("noticeInputOk")) {
+			model.addAttribute("msg", "게시글이 등록되었습니다");
+			model.addAttribute("url","notice/noticeList");
+		}
+		else if(msgFlag.equals("noticeInputNo")) {
+			model.addAttribute("msg", "게시글 등록 실패");
+			model.addAttribute("url","notice/noticeInput");
+		}
 		
 		return "include/message";
 	}

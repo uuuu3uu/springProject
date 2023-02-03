@@ -9,13 +9,13 @@
 		<div id="navbar" class="row">
 			<div class="col-sm-4">
 			  <a href="${ctp}/main.jsp">Home</a>
-				<a href="${ctp}/gongList.gong">Notice</a>
+				<a href="${ctp}/notice/noticeList">Notice</a>
 			  <a href="#news">About</a>
 			  <a href="#news">Service</a>
 			  <a href="#contact">Contact-us</a>
 			</div>		
 			<div class="col-sm-4">
-			  <div style="width: 200px; margin: -5px auto;"><a href="main.jsp"><img src="" style="width:200px;"/></a></div>
+			  <div style="width: 200px; margin: -5px auto;"><a href="${ctp}/"><img src="${ctp}/images/logo.png" style="width:200px;"/></a></div>
 			</div>
 			<div class="col-sm-4" style="justify-content: flex-end; display: flex">
 				<c:if test="${sLevel == 1 || sLevel == 2 || sLevel == 3}">

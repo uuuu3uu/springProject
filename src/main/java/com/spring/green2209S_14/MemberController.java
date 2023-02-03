@@ -59,6 +59,8 @@ public class MemberController {
 			session.setAttribute("sLevel", vo.getLevel());
 			session.setAttribute("sStrLevel", strLevel);
 			session.setAttribute("sMid", mid);
+			session.setAttribute("sName", vo.getName());
+			System.out.println("sName : " + vo.getName());
 			
 			if(idCheck.equals("on")) {	// 아이디 기억하겠다에 체크
 				Cookie cookie = new Cookie("cMid", mid);

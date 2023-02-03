@@ -20,7 +20,8 @@
 	<resources mapping="/css/**" location="/resources/css/" />
 	<resources mapping="/board/**" location="/resources/board/" />
 	<resources mapping="/pds/**" location="/resources/pds/" />
-	
+	<resources mapping="/ckeditor/**" location="/resources/ckeditor/" />
+	<resources mapping="/data/**" location="/resources/data/" />
 	<resources mapping="/member/**" location="/resources/member/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->

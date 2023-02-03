@@ -26,7 +26,7 @@
 			<div id="navbar" class="row">
 				<div class="col-sm-4">
 				  <a href="${ctp}/main.jsp">Home</a>
-				  <a href="${ctp}/gongList.gong">Notice</a>
+				  <a href="${ctp}/notice/noticeList">Notice</a>
 				  <a href="#news">About</a>
 				  <a href="#news">Service</a>
 				  <a href="#contact">Contact-us</a>
