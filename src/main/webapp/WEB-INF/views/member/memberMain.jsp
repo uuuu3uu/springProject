@@ -15,8 +15,9 @@
   
   <script src="${ctp}/js/woo.js"></script>
   
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+  
+  
+  
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp"/>
@@ -26,15 +27,15 @@
 	</div>
 </div>
 <p><br/></p>
-<div class="myAccountWrap">
+<div class="myAccountWrap" style="max-width: 1200px;">
 	<form name="myform" class="was-validated"> 
 		<h2>my account</h2>
 		<div class="row">
 			<div class="col">			
-				<p style="margin:20px 20px 10px 0"><i style="font-size:24px" class="fa">&#xf118;</i> &nbsp;<span style="color:orange; font-size:20px;"><b>${sName}</b> </span>님 반갑습니다</p>
+				<span style="font-size:18px; color:#d8628f"><i class="fi fi-rr-laugh-wink"></i> ${sName}</span>님 반갑습니다
 			</div>
 			<div class="col">
-				<div class="text-right mt-3">
+				<div class="text-right mb-2">
 					<a href=""><input type="button" class="btn btn-dark" value="내 정보 수정하기"/></a>
 				</div>
 			</div>
@@ -49,14 +50,12 @@
          	<div class="box-content1 vl">
          		<table class="table" style="margin-left :45px;">
          			<tr>
-         				<td><i class="fa fa-money" style="font-size:36px"></i></td>
-         				<td><span style="font-size:25px"> 적립금 </span></td>
+         				<td><span style="font-size:25px"><i class="fi fi-rr-piggy-bank"></i> 적립금 </span></td>
          				<td><hr style="border-style: dashed; width: 100px"/></td>
-	      				<td><span style="font-size:25px">${point}</span></td>
+	      				<td><span style="font-size:25px">${vo.point}</span></td>
          			</tr>
          			<tr>
-         				<td><i class="fa fa-ticket" style="font-size:36px"></i></td>
-         				<td><span style="font-size:25px"> 쿠폰 </span></td>
+         				<td><span style="font-size:25px"><img src="${ctp}/resources/images2/coupon.png" style="width:30px;"/> 쿠폰</span></td>
          				<td><hr style="border-style: dashed; width: 100px"/></td>
 	      				<td><span style="font-size:25px">0</span></td>
          			</tr>
@@ -66,75 +65,85 @@
 	    </div><!-- box-container-inner -->
   	</div><!-- box-container -->
   	
-  	<c:if test="${!empty fn:substring(bVo.bookingDate,1,11)}">
+  	
 	  	<div class="box-container">
 	  		<div class="box-container-inner2">
-	  			
-		  		<h4><i style="font-size:24px; color:red" class="fa">&#xf004;</i> &nbsp;지금 나의 예약</h4>
+		  		<h4><img src="${ctp}/resources/images2/party.png" style="width:25px;"/> &nbsp;지금 나의 예약</h4>
 		  		<table class="table table-hover mt-2">
-		  			<thead>
+		  			<thead class="thead-dark">
 			  			<tr>
-			  				<th class="text-center">예약자</th>
+			  				<th class="text-center">예약번호</th>
 			  				<th class="text-center">상품명</th>
 			  				<th class="text-center">예약날짜</th>
 			  				<!-- <th class="text-center">주문날짜</th>  -->
 			  				<th class="text-center">상태</th>
 			  			</tr>
 		  			</thead>
-		  			<tbody>
-		  				<c:forEach var="vos" items="${vos}" varStatus="st">
-				  			<c:if test="${vos.bookingStatus == 1 || vos.bookingStatus == 2 }">
-					  			<tr class="table-warning text-center">
-					  				<td>${vo.name}</td>
-					  				<td class="text-center">${vos.product}</td>
-					  				<td>${fn:substring(vos.bookingDate,0,16)}</td>
-					  				<td> 
-					  					<c:if test="${vos.bookingStatus == 1}"><span class="badge badge-pill badge-info">예약신청</span></c:if>
-					  					<c:if test="${vos.bookingStatus == 2}"><span class="badge badge-pill badge-primary">예약확인</span></c:if>
-					  				</td>
-				  				</tr>
-					  		</c:if>
-				  		</c:forEach>
-	  				</tbody>
+		  			
+		  			<tbody class="text-center">
+		  			<c:forEach var="bookingVo" items="${bookingVos}" varStatus="st" >
+			  			<c:if test="${bookingVo.bookingStatus == 1 || bookingVo.bookingStatus == 2}">
+			  				<tr>
+			  					<td>${bookingVo.BNumber}</td>
+			  					<td>${bookingVo.categorySubName}</td>
+			  					<td>${fn:substring(bookingVo.bookingStartDate,0,11)}/${fn:substring(bookingVo.bookingStartDate,11,13)}시</td>
+			  					<td>
+										<c:if test="${bookingVo.bookingStatus == 1}"><span class="badge badge-pill badge-info">예약신청</span></c:if>
+										<c:if test="${bookingVo.bookingStatus == 2}"><span class="badge badge-pill badge-success">예약완료</span></c:if>
+									</td>
+			  				</tr>
+			  			</c:if>
+			  			<%-- <c:if test="${bookingVo.bookingStatus == 3 || bookingVo.bookingStatus == 4 || bookingVo.bookingStatus == 5}">
+				  			<tr>
+				  				<td colspan="4" class="text-center">시술기록이 없습니다 </td>
+				  			</tr>
+			  			</c:if> --%>
+			  			
+		  			</c:forEach>
+		  			</tbody>
+		  			
 	  			</table>
 	  		</div>
 	  	</div>
-  	</c:if>
+  
   	
   	
   	<div class="box-container">
   		<div class="box-container-inner2">
-	  		<h4><i style="font-size:24px" class="fa">&#xf073;</i> &nbsp;나의 시술 기록</h4>
-	  		<table class="table">
-	  			<thead class="thead-dark">
-		  			<tr>
-		  				<th class="text-center" width="30%">날짜</th>
-		  				<th class="text-center">상품명</th>
-		  				<th class="text-center">상태</th>
-		  			</tr>
-	  			</thead>
-	  			<c:forEach var="vos" items="${vos}" varStatus="st">
-		  			<c:if test="${vos.bookingStatus == 1} || ${vos.bookingStatus == 2}">
-			  			<tr>
-			  				<td colspan="3" class="text-center">시술기록이 없습니다 </td>
-			  			</tr>
-			  		</c:if>
-			  		<c:if test="${vos.bookingStatus == 3 || vos.bookingStatus == 4}">
-			  			<tr>
-			  				<td class="text-center">
-			  					${fn:substring(vos.bookingDate,0,16)}
-			  				</td>
-			  				<td class="text-center">${vos.product}</td>
-			  				<td class="text-center">
-			  					<c:if test="${vos.bookingStatus == 1}"><span class="badge badge-pill badge-info">예약신청</span></c:if>
-			  					<c:if test="${vos.bookingStatus == 2}"><span class="badge badge-pill badge-primary">예약확인</span></c:if>
-			  					<c:if test="${vos.bookingStatus == 3}"><span class="badge badge-pill badge-success">시술완료</span></c:if>
-			  					<c:if test="${vos.bookingStatus == 4}"><span class="badge badge-pill badge-danger">취소</span></c:if>
-			  				</td>
-			  		</c:if>
-			  	</c:forEach>
-	  		</table>
-	  		<h4><i style="font-size:24px" class="fa">&#xf086;</i> &nbsp;나의 1:1문의</h4>
+	  		<h4><img src="${ctp}/resources/images2/calendar.png" style="width:25px; margin-top: -7px;"/> &nbsp;나의 시술 기록</h4>
+				<table class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th class="text-center" width="30%">예약번호</th>
+							<th class="text-center">상품명</th>
+							<th class="text-center">예약날짜</th>
+							<th class="text-center">상태</th>
+						</tr>
+					</thead>
+					<tbody class="text-center">
+							<c:forEach var="bookingVo" items="${bookingVos}" varStatus="st" >
+								<c:if test="${bookingVo.bookingStatus == 3 || bookingVo.bookingStatus == 4 || bookingVo.bookingStatus == 5}">
+									<tr>
+										<td>${bookingVo.BNumber}</td>
+										<td>${bookingVo.categorySubName}</td>
+										<td>${fn:substring(bookingVo.bookingStartDate,0,11)}/${fn:substring(bookingVo.bookingStartDate,11,13)}시</td>
+										<td>
+										<c:if test="${bookingVo.bookingStatus == 3}"><span class="badge badge-pill badge-primary">시술완료</span></c:if>
+										<c:if test="${bookingVo.bookingStatus == 4}"><span class="badge badge-pill badge-danger">취소</span></c:if>
+										<c:if test="${bookingVo.bookingStatus == 5}"><span class="badge badge-pill badge-danger">노쇼</span></c:if>
+										</td>
+									</tr>
+								</c:if>
+								<%-- <c:if test="${bookingVo.bookingStatus == 1 || bookingVo.bookingStatus == 2}">
+					  			<tr>
+					  				<td colspan="4" class="text-center">시술기록이 없습니다 </td>
+					  			</tr>
+				  			</c:if> --%>
+			  		 </c:forEach>
+					</tbody>
+				</table>	
+				  		
+	  		<h4><img src="${ctp}/resources/images2/messeage.png" style="width:28px; margin-top: -7px;"/> &nbsp;나의 1:1문의</h4>
 	  		<table class="table">
 	  			<thead class="thead-dark">
 		  			<tr>

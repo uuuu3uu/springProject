@@ -1,5 +1,7 @@
 package com.spring.green2209S_14;
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,21 +10,27 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.green2209S_14.service.BookingService;
 import com.spring.green2209S_14.service.MemberService;
+import com.spring.green2209S_14.vo.BookingVO;
 import com.spring.green2209S_14.vo.MemberVO;
 
-@Controller
+@Controller 
 @RequestMapping("/member")
 public class MemberController {
 	
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	BookingService bookingService;
 	
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
@@ -51,7 +59,8 @@ public class MemberController {
 		if(vo != null && passwordEncoder.matches(pwd, vo.getPwd()) && vo.getUserDel().equals("NO")) {
 			// 회원 인증 처리된 경우 수행할 내용 ? strLevel처리, session에 필요한 자료를 저장, 쿠키 값 처리, 그날 방문자수 1증가(방문포인트도)
 			String strLevel = "";
-			if(vo.getLevel() == 1) strLevel = "일반회원";
+			if(vo.getLevel() == 0) strLevel = "비회원";
+			else if(vo.getLevel() == 1) strLevel = "일반회원";
 			else if(vo.getLevel() == 2) strLevel = "우수회원";
 			else if(vo.getLevel() == 3) strLevel = "VIP";
 			else if(vo.getLevel() == 4) strLevel = "관리자";
@@ -60,6 +69,7 @@ public class MemberController {
 			session.setAttribute("sStrLevel", strLevel);
 			session.setAttribute("sMid", mid);
 			session.setAttribute("sName", vo.getName());
+			session.setAttribute("sTel", vo.getTel());
 			System.out.println("sName : " + vo.getName());
 			
 			if(idCheck.equals("on")) {	// 아이디 기억하겠다에 체크
@@ -94,8 +104,22 @@ public class MemberController {
 		String mid = (String) session.getAttribute("sMid");
 		
 		MemberVO vo = memberService.getMemberIdCheck(mid);
+		String strLevel = "";
+		if(vo.getLevel() == 0) strLevel = "비회원";
+		else if(vo.getLevel() == 1) strLevel = "일반회원";
+		else if(vo.getLevel() == 2) strLevel = "우수회원";
+		else if(vo.getLevel() == 3) strLevel = "VIP";
+		else if(vo.getLevel() == 4) strLevel = "관리자";
 		
+		
+		model.addAttribute("strLevel" , strLevel);
 		model.addAttribute("vo" , vo);
+		
+		// 시술내역 불러오기
+		List<BookingVO> bookingVos = bookingService.getAccounthistory(mid);
+		System.out.println("bookingVos" + bookingVos);
+		model.addAttribute("bookingVos", bookingVos);
+		
 		
 		return "member/memberMain";
 	}

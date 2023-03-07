@@ -2,6 +2,7 @@ package com.spring.green2209S_14.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,33 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void setMemberJoinOk(MemberVO vo) {
 		memberDAO.setMemberJoinOk(vo);
+		
+	}
+
+	@Override
+	public List<MemberVO> getMemberList(int startIndexNo, int pageSize, String part, String searchString) {
+		return memberDAO.getMemberList(startIndexNo, pageSize, part, searchString);
+	}
+
+	@Override
+	public MemberVO memberInforGet(String name, String tel) {
+		return memberDAO.memberInforGet(name, tel);
+	}
+
+	@Override
+	public MemberVO getMemberByNameTel(String name, String tel) {
+		return memberDAO.getMemberByNameTel(name, tel);
+	}
+
+	@Override
+	public void setNoMemberJoin(String name, String tel) {
+		memberDAO.setNoMemberJoin(name, tel);
+		
+	}
+
+	@Override
+	public void setPointUpdate(String mid, int point) {
+		memberDAO.setPointUpdate(mid, point);
 		
 	}
 

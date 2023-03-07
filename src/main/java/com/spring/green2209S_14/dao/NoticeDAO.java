@@ -1,5 +1,6 @@
 package com.spring.green2209S_14.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -13,5 +14,15 @@ public interface NoticeDAO {
 	public int setNoticeInput(@Param("vo") NoticeVO vo);
 
 	public int totRecCnt(@Param("part") String part, @Param("searchString") String searchString);
+	
+	public void setNoticeReadNum(@Param("idx") int idx);
 
+	public NoticeVO getNoticeContent(@Param("idx") int idx);
+
+	public ArrayList<NoticeVO> getPrevNext(@Param("idx") int idx);
+
+	public void setNoticeDeleteOk(@Param("idx") int idx);
+
+	public void setNoticeUpdateOk(@Param("vo") NoticeVO vo);
+	
 }

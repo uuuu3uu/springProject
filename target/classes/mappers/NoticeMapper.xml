@@ -13,10 +13,31 @@
 		SELECT 	*,datediff(now(), wDate) as day_diff, timestampdiff(hour, wDate, now()) as hour_diff FROM notice order by idx desc limit #{startIndexNo},#{pageSize};
 	</select>
 	
+	<select id="getNoticeContent" resultType="com.spring.green2209S_14.vo.NoticeVO">
+		select * from notice where idx = #{idx};
+	</select>
+	
+	<select id="getPrevNext" resultType="com.spring.green2209S_14.vo.NoticeVO">
+		select idx, title from notice where idx in (
+		(select idx from notice where <![CDATA[idx < #{idx}]]> order by idx desc limit 1),	<!-- 이전글 -->
+		(select idx from notice where <![CDATA[idx > #{idx}]]> limit 1));											<!-- 다음글 -->
+	</select>
+	
 	<insert id="setNoticeInput">
 		insert into notice values (default,#{vo.name},#{vo.title},#{vo.content},default,default,default,#{vo.mid});
 	</insert>
 	
+	<update id="setNoticeReadNum">
+		update notice set readNum = readNum+1 where idx = #{idx};
+	</update>
+	
+	<update id="setNoticeUpdateOk">
+		update notice set title = #{vo.title}, content = #{vo.content} where idx = #{vo.idx} ;
+	</update>
+	
+	<delete id="setNoticeDeleteOk">
+		delete from notice where idx = #{idx};
+	</delete>
 	
 	
 

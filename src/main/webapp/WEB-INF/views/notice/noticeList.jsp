@@ -22,9 +22,9 @@
 
 <header>
   <jsp:include page="/WEB-INF/views/include/nav.jsp"/>
-  <div class="sub_img">
-  	<img src="images/sub6.jpg" alt="sub_img">
-  </div>
+  <%-- <div class="sub_img">
+  	<img src="${ctp}/images/sub6.jpg" alt="sub_img">
+  </div> --%>
 </header>
 
 <section>

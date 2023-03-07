@@ -22,4 +22,7 @@ public class MemberVO {
 	private String lastDate;
 	private int todayCnt;
 	private int noShow;
+	
+	private int day_diff; // 날짜 차이 계산 필드 (1일차이 계산필드)
+	private int hour_diff;// 시간 차이 계산 필드...(24시간차이 계산필드)
 }

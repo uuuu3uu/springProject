@@ -7,12 +7,12 @@ create table member2 (
 	name 		 	varchar(20) not null,					/* 회원성명 */
 	gender 	 	varchar(5) default '여자',			/* 성별 */
 	birthday datetime default now(),				/* 생일 */
-	tel 		 	varchar(15) not null,					/* 전화번호(010-1234-5678) (중복 불허??) */
 	address 	varchar(100) not null,				/* 회원주소 */
+	tel 		 	varchar(15) not null,					/* 전화번호(010-1234-5678) (중복 불허??) */
 	email			varchar(50) not null,					/* 이메일(아이디/비밀번호) 분실 시 사용 - 형식체크 필수 */
 	path			varchar(20),									/* 알게된 경로 */
 	userDel   char(2) default 'NO',					/* 회원 탈퇴 신청 여부(OK:탈퇴신청한 회원, NO:현재 가입중인 회원) */
-	point 		int default 1000, 						/* 회원 누적 적립금(가입시 기본 1000증정 )*/
+	point 		int default 3000, 						/* 회원 누적 적립금(가입시 기본 3000증정 )*/
 	level 		int default 1,   							/* 회원 등급(1:일반회원(시술이력0) 2:우수회원(시술이력1이상) 3:VIP회원(시술이력3이상) 4:관리자) */
 	visitCnt 	int default 0, 								/* 방문 횟수 */
 	startDate datetime default now(),   		/* 최초 가입일 */
@@ -20,10 +20,23 @@ create table member2 (
 	todayCnt 					 int default 0, 			/* 오늘 방문한 횟수 */
 	noShow 						 int default 0,				/* 예약 불이행 */
 	primary key(idx),												/* 주 키 : idx(고유번호) */
-	unique key(mid)													/* 유니큐키 mid(아이디) */ 
+												/* 유니큐키 mid(아이디) */ 
+);
+
+
+create table blackList (
+	idx 		 	int not null auto_increment,	/* 블랙리스트 고유번호 */
+	mid 		 	varchar(20) not null,					/* 회원 아이디 (중복 불허) */
+	name 		 	varchar(20) not null,					/* 회원성명 */
+	tel 		 	varchar(15) not null,					/* 전화번호(010-1234-5678) (중복 불허??) */
+	noShowCnt 		int default 0,						/* 노쇼갯수 */
+	noShowhistory varchar(100),							/* 노쇼 일자 */
+	bookingPath 	int,											/* 예약경로 1.직접예약 2.관리자예약 */
+	primary key(idx)												
 );
 
 select * from member2;
+select * from blackList;
 select name,gender,tel,point,level from member2;
 select m.name,m.gender,m.tel,m.point,m.level, b.pIdx, b.bookingDate, b.bookingStatus from member2 m, booking2 b where m.mid = b.mid order by b.bookingDate desc limit 0,5;
 
@@ -42,3 +55,32 @@ insert into member2 values (default,'admin','03ac674216f3e15c761ee1a5e255f067953
 select *,(select pro1 from product where idx = booking.pIdx) as pro1 , (select pro2 from product where idx = booking.pIdx) as pro2 , b.bookingDate from member order by idx desc limit 0,5;
 
 select *,m.name from booking b, member m where b.mid=m.mid;
+
+select  * , 
+(select gender from member2 where b.mid = mid) as gender, 
+		(select level from member2 where b.mid = mid) as level,
+		 (select point from member2 where b.mid = mid) as point,
+		 (select noShow from member2 where b.mid = mid) as noShow
+		 from booking2 b
+where b.bookingStatus =5 group by b.tel order by idx desc;
+
+select * from categorysub;
+select * from categorysub;
+
+	select  *  
+(select gender from member2 where b.mid = mid) as gender, 
+		(select level from member2 where b.mid = mid) as level,
+		 (select point from member2 where b.mid = mid) as point,
+		 (select noShow from member2 where b.mid = mid) as noShow,
+		 (select count(*) from booking2 where bookingStatus=5 and b.tel=tel group by tel) as cnt
+		 from booking2 b
+ group by b.tel  order by idx desc;
+ 
+ 
+ 		select b.*,(select categorySubName from categorySub s,dbProduct p where b.pIdx=p.idx and p.categorySubCode = s.categorySubCode) as categorySubName
+		, (select gender from member2 where b.mid = mid) as gender, 
+		(select level from member2 where b.mid = mid) as level,
+		 (select point from member2 where b.mid = mid) as point,
+		 (select noShow from member2 where b.mid = mid) as noShow
+		  from booking2 b
+		order by b.idx desc;

@@ -1,10 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <style>
-	.body {
-		margin: 0;
-  	background-color: #fff;
-  	font-family: Arial, Helvetica, sans-serif;
-	}
+	body {
+			margin: 0;
+			background-color: #fff;
+			font-family: 'Noto Sans KR', sans-serif !important;
+			font-size: 16px;
+	    /* line-height: 1.625em; */
+	    /* font-weight: 400; */
+	    color: #6f6f6f;
+	    /* letter-spacing: .02em; */
+	 }
 	.container-fluid {
 		margin: 0;
 		padding: 0;
@@ -19,7 +24,7 @@
   }
   .carousel-inner {
   	width: 100%;
-  	height: 650px;
+  	height: 760px;
   }
 	.header-top {
   	border-color: rgba(111,111,111,0.1);

@@ -16,9 +16,9 @@
   <script>
     'use strict';
  		// 게시글 삭제처리
-  	function gongDelCheck() {
+  	function noticeDelCheck() {
     	let ans = confirm("현 게시글을 삭제하시겠습니까?");
-    	if(ans) location.href = "${ctp}/gongDeleteOk.gong?idx=${vo.idx}";
+    	if(ans) location.href = "${ctp}/notice/noticeDeleteOk?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}&mid=${vo.mid}";
     	
     }
 
@@ -42,7 +42,7 @@
   <article>
    	<p><br/></p>
 		<div class="gongContentWrap">
-   		<form name="myform" method="post" action="${ctp}/gongUpdateOk.gong">
+   		<form name="myform" method="post">
 			
 				<h2>Notice</h2>
 				<table class="table" style="border-top:none; width:65%">
@@ -54,26 +54,26 @@
 					
 					<tr>
 						<td colspan="2" class="m-3">
-							<p style="font-size:14px" class="text-right">${fn:substring(vo.wDate,0,10)}</p>
-							<c:if test="${vo.fName != 'null'}">
-							  <c:set var="fNames" value="${fn:split(vo.fName,'/')}"/>
-							  <c:forEach var="fName" items="${fNames}">
-					  			<img src="${ctp}/data/gong/${fName}" width="550px"/>
+							<p style="font-size:14px" class="text-right">${fn:substring(vo.WDate,0,10)}</p>
+							<c:if test="${vo.FName != 'null'}">
+							  <c:set var="fNames" value="${fn:split(vo.FName,'/')}"/>
+							  <c:forEach var="fName" items="${FNames}">
+					  			<img src="${ctp}/data/ckeditor/notice/${FName}" width="550px"/>
 					  		</c:forEach>
 				  		</c:if>
 				  		<br/>
 				  		<br/>
-					  	<p class="mb-5">${vo.content}</p>
+					  	<p class="mb-5">${vo.content}</p> <!-- 컨텐츠 -->
 						</td>		
 										
 					</tr>
 					<tr>
 						<td colspan="2" class="text-right">
 						<c:if test="${sLevel == 4}">
-							<input type="button" value="삭제하기" onclick="gongDelCheck()" class="btn btn-outline-secondary"/>&nbsp;
-							<input type="button" value="수정하기" onclick="location.href='${ctp}/gongUpdate.gong?idx=${vo.idx}';" class="btn btn-outline-secondary"/>&nbsp;
+							<input type="button" value="삭제하기" onclick="noticeDelCheck()" class="btn btn-outline-secondary"/>&nbsp;
+							<input type="button" value="수정하기" onclick="location.href='${ctp}/notice/noticeUpdate?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}';" class="btn btn-outline-secondary"/>&nbsp;
 						</c:if>
-						<input type="button" value="돌아가기" onclick="location.href='${ctp}/gongList.gong';" class="btn btn-outline-secondary"/>&nbsp;
+						<input type="button" value="돌아가기" onclick="location.href='${ctp}/notice/noticeList';" class="btn btn-outline-secondary"/>&nbsp;
 						</td>
 					</tr>
 				</table>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.green2209S_14.dao.DbShopDAO">
+  
+  <select id="getCategoryMain" resultType="com.spring.green2209S_14.vo.DbProductVO">
+    select * from categoryMain order by categoryMainCode desc;
+  </select>
+  
+  <select id="getCategorySub" resultType="com.spring.green2209S_14.vo.DbProductVO">
+  	select * 
+  	from categorySub sub, categoryMain main 
+  	where sub.categoryMainCode=main.categoryMainCode
+  	order by sub.categorySubCode desc;
+  </select>
+  
+  <select id="getCategoryMainOne" resultType="com.spring.green2209S_14.vo.DbProductVO">
+    select * from categoryMain where categoryMainCode = #{categoryMainCode} or categoryMainName = #{categoryMainName};
+  </select>
+  
+  <!-- 대분류에 속해있는 하위항목이 있는지 체크 -->
+  <select id="getCategorySubOne" resultType="com.spring.green2209S_14.vo.DbProductVO">
+    <if test="vo.categorySubCode == ''">
+      select * from categorySub where categoryMainCode = #{vo.categoryMainCode};	<!-- 1차메뉴 삭제시에 2차메뉴 분류에 내용이 있는지를 체크 -->
+    </if>
+    <if test="vo.categorySubCode != ''">
+      select *
+      from categorySub
+      where categoryMainCode = #{vo.categoryMainCode} and categorySubCode = #{vo.categorySubCode} and categorySubName = #{vo.categorySubName}; 
+    </if>
+  </select>
+  
+  <select id="getDbProductOne" resultType="com.spring.green2209S_14.vo.DbProductVO">
+  	select * from dbProduct where substring(productCode,2,2) = #{categorySubCode}; 
+  </select>
+  
+  
+  
+  <select id="getMainTitleList" resultType="com.spring.green2209S_14.vo.DbProductVO">
+  	select categoryMainName from categoryMain group by categoryMainName order by categoryMainName;
+  </select>
+  
+  
+   
+ <!--  <select id="getCategorySubName" resultType="com.spring.green2209S_14.vo.DbProductVO">
+  	select categorySubName from categorySub order by categorySubName desc limit 1;
+  </select> -->
+
+  <select id="getDbShopList" resultType="com.spring.green2209S_14.vo.DbProductVO">
+    <if test='part == "전체"'>
+  		select product.*, main.categoryMainName, sub.categorySubName from dbProduct product, categoryMain main, categorySub sub where product.categoryMainCode=main.categoryMainCode and main.categoryMainCode=sub.categoryMainCode and product.categorySubCode=sub.categorySubCode order by idx desc;
+  	</if>
+    <if test='part != "전체"'> <!-- substring(product.productCode,1,2) : 프로덕트코드를 1번째부터 2개 잘라서 쓴다 -->
+  		select product.*, main.categoryMainName, sub.categorySubName 
+  		from dbProduct product, categoryMain main, categorySub sub
+  		where product.categoryMainCode=main.categoryMainCode
+  		and main.categoryMainCode=sub.categoryMainCode
+  		and product.categorySubCode=sub.categorySubCode
+  		and main.categoryMainName = #{part} 
+  		order by idx desc;
+  	</if>	
+  	<!-- select * from dbProduct order by idx desc; -->
+  </select>
+  
+  <!-- 
+  select ( product.*, sub.categorySubName =>  프로덕트의 전체, 서브의 카테고리서브네임을  ) 
+  from  (  dbProduct product, categorySub sub  => 테이블 이름) 
+  where  ( sub.categorySubName = #{part}   => #{part}('넘겨준 소분류의 이름')와 서브의 카테고리서브네임(소분류 이름)과 같은 조건)
+  and substring(product.productCode,4,3)=sub.categorySubCode 그리고 연결되어있는 두 테이블을 연결되어 있는 외래키를 비교해서 서로 같은 경우만 가져온다
+  
+  order by idx desc;  => 
+
+   -->
+  
+  <select id="getCategorySubName" resultType="com.spring.green2209S_14.vo.DbProductVO">
+  	select * from categorySub where categoryMainCode = #{categoryMainCode}; 
+  </select>
+  
+  <select id="getProductMaxIdx" resultType="com.spring.green2209S_14.vo.DbProductVO">
+  	select * from dbProduct order by idx desc limit 1;
+  </select>
+  
+ 	<select id="getMainTitle" resultType="com.spring.green2209S_14.vo.DbProductVO">
+ 		select * from categoryMain where categoryMainName = #{categoryMainName};
+ 	</select>
+  
+  <select id="getDbShopProduct" resultType="com.spring.green2209S_14.vo.DbProductVO">
+  	<!-- select * from dbProduct where idx = #{idx}; -->
+  	select product.*, sub.categorySubName
+		from dbProduct product
+		JOIN categorySub sub ON product.categorySubCode = sub.categorySubCode
+		where product.idx = #{idx}
+		order by product.idx;
+  </select>
+   <!-- 
+  <select id="getDbShopProduct" resultType="com.spring.green2209S_14.vo.BookingVO">
+  	select * from booking2 where <if test='selectDate != ""'>substring(bookingStartDate,1,10)==#{selectDate}</if> ;
+  </select>
+   -->
+  <select id="getDbShopOption" resultType="com.spring.green2209S_14.vo.DbProductVO">
+  	select * from dbOption where productIdx = #{productIdx} order by idx;
+  </select>
+  
+  <select id="getDbProductAll" resultType="com.spring.green2209S_14.vo.DbProductVO">
+  	select m.categoryMainName as categoryMainName,s.categorySubName as categorySubName,p.* from dbProduct p, categoryMain m, categorySub s 
+    where p.categoryMainCode=m.categoryMainCode and p.categorySubCode=s.categorySubCode order by idx desc;
+  </select>
+
+  <select id="getPIdxSearch" resultType="int">
+    select idx from dbProduct where productCode = #{productCode};
+  </select>
+  
+  <select id="getDbProduct" resultType="com.spring.green2209S_14.vo.DbProductVO">
+  	select * from dbProduct order by idx desc;
+  </select>
+  
+  <!-- 1차메뉴 등록 -->
+  <insert id="setCategoryMainInput">
+    insert into categoryMain values (#{vo.categoryMainCode}, #{vo.categoryMainName});
+  </insert>
+  
+  <!-- 2차메뉴 등록 -->
+  <insert id="setCategorySubInput">
+    insert into categorySub values (#{vo.categoryMainCode}, #{vo.categorySubCode}, #{vo.categorySubName});
+  </insert>
+  
+  <!-- 관리자페이지에서 상품등록하기 -->
+  <insert id="setDbProductInput">
+    insert into dbProduct value (#{vo.idx},#{vo.categoryMainCode},#{vo.categorySubCode},#{vo.productCode},#{vo.detail},#{vo.mainPrice},#{vo.fSName},#{vo.useTime});
+  </insert>
+  
+	<update id="getProductUpdate">
+		update dbProduct set categoryMainCode=#{categoryMainCode}, categorySubCode=#{categorySubCode}, detail=#{detail}, mainPrice=#{mainPrice} where idx=#{idx};
+	</update>
+  
+  <!-- 1차메뉴 삭제 -->
+  <delete id="setCategoryMainDelete">
+    delete from categoryMain where categoryMainCode = #{categoryMainCode};
+  </delete>
+  
+  <!-- 2차메뉴 삭제 -->
+  <delete id="setCategorySubDelete">
+    delete from categorySub where categorySubCode = #{categorySubCode};
+  </delete>
+  
+  <!-- 상품 삭제 -->
+  <delete id="setProductDelete">
+  	delete from dbProduct where idx=#{idx};
+  </delete>
+  
+  
+  
+  
+</mapper>

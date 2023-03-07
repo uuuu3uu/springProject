@@ -17,14 +17,14 @@ public class MessageController {
 		
 		if(msgFlag.equals("memberLoginOk")) {
 			model.addAttribute("msg", mid + "님 로그인 되었습니다");
-			model.addAttribute("url","member/memberMain");
+			model.addAttribute("url","/");
 		}
 		else if(msgFlag.equals("memberLogout")) {
 			model.addAttribute("msg", mid + "님 로그아웃 되셨습니다");
 			model.addAttribute("url","member/memberLogin");
 		}
 		else if(msgFlag.equals("memberLoginNo")) {
-			model.addAttribute("msg", "로그인 실패");
+			model.addAttribute("msg", "아이디 혹은 비밀번호를 다시 확인해주세요");
 			model.addAttribute("url","member/memberLogin");
 		}
 		else if(msgFlag.equals("memberJoinOk")) {
@@ -50,6 +50,34 @@ public class MessageController {
 		else if(msgFlag.equals("noticeInputNo")) {
 			model.addAttribute("msg", "게시글 등록 실패");
 			model.addAttribute("url","notice/noticeInput");
+		}
+		else if(msgFlag.equals("noticeDeleteOk")) {
+			model.addAttribute("msg", "게시글이 삭제되었습니다");
+			model.addAttribute("url","notice/noticeList"+flag);
+		}
+		else if(msgFlag.equals("noticeUpdateOk")) {
+			model.addAttribute("msg", "게시글이 수정되었습니다");
+			model.addAttribute("url","notice/noticeList"+flag);
+		}	
+		else if(msgFlag.equals("dbProductInputOk")) {
+			model.addAttribute("msg", "신규 상품이 등록되었습니다.");
+			model.addAttribute("url", "dbShop/dbShopList");
+		}
+		else if(msgFlag.equals("bookingCountOver")) {
+			model.addAttribute("msg", "예약할 수 없는 시간입니다 시술시간을 확인해주세요");
+			model.addAttribute("url", "booking/booking"+flag);
+		}
+		else if(msgFlag.equals("bookingCountOverAdmin")) {
+			model.addAttribute("msg", "예약할 수 없는 시간입니다 시술시간을 확인해주세요");
+			model.addAttribute("url", "admin/booking/bookingCalendar"+flag);
+		}
+		else if(msgFlag.equals("bookingOk")) {
+			model.addAttribute("msg", "다음페이지로 이동합니다");
+			model.addAttribute("url", "booking/bookingPayment");
+		}
+		else if(msgFlag.equals("bookingOkOK")) {
+			model.addAttribute("msg", "다음페이지로 이동합니다");
+			model.addAttribute("url", "admin/booking/bookingCalendar");
 		}
 		
 		return "include/message";

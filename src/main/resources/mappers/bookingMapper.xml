@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.green2209S_14.dao.BookingDAO">
+	
+	<select id="totRecCnt" resultType="int">
+  	select count(*) from booking2 where idx != 0
+  	<if test="part != ''"><if test="searchString"> and  ${part} like concat('%',#{searchString},'%') </if></if>
+  	<if test="searchStart != ''">  AND date_format(bookingStartDate, '%Y-%m-%d') >= #{searchStart} </if>
+  	<if test="searchEnd != ''"> and #{searchEnd}>=date_format(bookingStartDate, '%Y-%m-%d') </if>
+  	;
+  </select>
+	
+	<select id="getBookingSearch" resultType="com.spring.green2209S_14.vo.BookingVO">
+  	select * from booking2 <if test='selectDate != ""'>where substring(bookingStartDate,1,10) = #{selectDate}</if> order by bookingStartDate;
+  </select>
+  
+  <select id="getDiffSelectCount" resultType="int">
+    select count(idx) from booking2 where substring(bookingStartDate,1,10) = #{selectDate} and substring(bookingStartDate,12,2) != substring(bookingEndDate,12,2);
+  </select>
+  
+  <select id="getBookingIdx" resultType="int">
+    select idx from booking2 order by idx desc limit 1;
+  </select>
+  
+  <select id="getBookingTimeSearch" resultType="com.spring.green2209S_14.vo.BookingTimeVO">
+    select * from bookingTime where substring(bookingDate,1,10) = #{selectDate};
+  </select>
+  
+ 	<select id="getBookingCount" resultType="int">
+  	select count(*) from bookingTime where <![CDATA[substring(bookingDate,1,10) = #{selectDate} and bookingTimeBlock > #{bookingStartDate} and bookingTimeBlock <= #{useTime}]]>;
+  </select>
+  
+ 	<select id="getBookingCountAdmin" resultType="int">
+  	select count(*) from bookingTime where <![CDATA[substring(bookingDate,1,10) = #{selectDate} and bookingTimeBlock >= #{bookingStartTime} and bookingTimeBlock <= #{bookingEndTime}]]>;
+  </select>
+  
+  <!-- 고객이 직접 예약할때 -->
+	<select id="getBookingData" resultType="com.spring.green2209S_14.vo.BookingVO">
+		<!-- select * from booking2 where name=#{name} and date_format(bookingStartDate, '%Y-%m-%d')=#{ymd}; -->
+		select bookingStartDate,name from booking2 where date_format(bookingStartDate, '%Y-%m')=#{ym} order by bookingStartDate, name;
+	</select>
+	
+	<!-- 관리자가 직접 데이터를 넣을 때  -->
+	<select id="getBookingDataAll" resultType="com.spring.green2209S_14.vo.BookingVO">
+ 		<!-- <if test="mid != ' '">
+	 		select b.*, m.* from booking2 b, memeber2 m
+	 		where b.name = m.name
+	 		order by b.idx desc;
+		</if> -->
+ 		select b.*, (select categorySubName from categorySub sub, dbProduct p where b.pIdx=p.idx and p.categorySubCode = sub.categorySubCode) as categorySubName,
+		(select gender from member2 where b.tel = tel and b.name = name ) as gender, 
+		(select level from member2 where  b.tel = tel and b.name = name) as level,
+		(select point from member2 where  b.tel = tel and b.name = name) as point,
+		(select noShow from member2 where  b.tel = tel and b.name = name) as noShow
+		from booking2 b where idx != 0
+  	<if test="part != ''"><if test="searchString"> and  ${part} like concat('%',#{searchString},'%') </if></if>
+  	<if test="searchStart != ''"> and <![CDATA[date_format(b.bookingStartDate, '%Y-%m-%d')>=#{searchStart}]]>  </if> 
+  	<if test="searchEnd != ''"> and <![CDATA[#{searchEnd}>=date_format(b.bookingStartDate, '%Y-%m-%d')]]>  </if>
+		<if test="orderBy==''">order by b.idx desc</if>
+		<if test="orderBy=='down'">
+			order by b.bookingStartDate desc
+		</if>
+		<if test="orderBy=='up'">
+			order by b.bookingStartDate
+		</if>
+		limit #{startIndexNo},#{pageSize}
+		;
+		<!-- select categorySubName from categorySub sub, dbProduct p where b.pIdx=p.idx and p.categorySubCode = sub.categorySubCode
+				 categorySub와 dbProduct 테이블을 조인하여, 예약한 제품의 카테고리 하위 이름(categorySubName)을 조회합니다. -->
+		
+		<!-- <if test="part == '' and searchString == ''">
+  		select * from booking2 order by idx;
+    </if>
+  	select * from member2 <if test="mid != ''"> where mid like concat('%',#{mid},'%') </if> order by idx desc limit #{startIndexNo},#{pageSize};
+    <if test="part != '' or searchString != ''">
+  		select * from booking2 where ${part} like concat('%',#{searchString},'%') order by idx desc limit #{startIndexNo},#{pageSize};
+    </if> -->
+	</select>
+	
+	<select id="getBookingBlackList" resultType="com.spring.green2209S_14.vo.BookingVO">
+		select  * ,
+			(select gender from member2 where  b.tel = tel and b.name = name) as gender, 
+			(select level from member2 where b.tel = tel and b.name = name) as level,
+		  (select point from member2 where b.tel = tel and b.name = name) as point,
+		  (select noShow from member2 where b.tel = tel and b.name = name) as noShow,
+		  (select count(*) from booking2 where bookingStatus=5 and b.tel = tel and b.name = name group by tel) as noShowCnt
+		  from booking2 b
+ 			group by b.tel  order by idx desc;
+	</select>
+
+<!-- 	<select id="getProductSubName" resultType="com.spring.green2209S_14.vo.BookingVO">
+		select b.*, p.
+	</select> -->
+	
+	<select id="getMemberTelCheck" resultType="String">
+	  select tel from booking2 where idx = #{idx};
+	</select>
+
+	
+	<select id="getBookingHistory" resultType="com.spring.green2209S_14.vo.BookingVO">
+	  <!-- select * from booking2 where name = #{name} and tel = #{tel}; -->
+	  
+		select b.*, (select categorySubName from categorySub sub, dbProduct p where b.pIdx=p.idx and p.categorySubCode = sub.categorySubCode) as categorySubName
+		from booking2 b 
+		where b.name = #{name} and b.tel = #{tel};
+	  
+	</select>
+	
+	<select id="getAccounthistory" resultType="com.spring.green2209S_14.vo.BookingVO">
+		select b.*, (select categorySubName from categorySub sub, dbProduct p where b.pIdx=p.idx and p.categorySubCode = sub.categorySubCode) as categorySubName
+		from booking2 b 
+		where mid = #{mid};
+	</select>
+
+	
+	<insert id="setBookingData">
+		insert into booking2 values (default, #{bookingVo.pIdx},#{bookingVo.bNumber}, #{bookingVo.mid}, #{bookingVo.name}, #{bookingVo.tel},#{bookingVo.bookingStartDate},#{bookingVo.bookingEndDate},default,#{bookingVo.customerCheck},#{bookingVo.paymentMethod},default,default,#{bookingVo.paymentStatus},#{bookingVo.historyContent},#{bookingVo.historyMemo},default);
+	</insert>
+	
+	
+	<insert id="setBookingTime">
+		insert into bookingTime values (default, #{bIdx}, #{bookingTimeBlock}, #{bookingDate});
+	</insert>
+	
+  <insert id="setBookingDataAdmin">
+  	<!-- <if test="bookingVo.bookingStatus!=2">
+			insert into booking2 values (default, #{bookingVo.pIdx}, #{bookingVo.mid}, #{bookingVo.name}, #{bookingVo.tel},#{bookingVo.bookingStartDate},#{bookingVo.bookingEndDate},default,#{bookingVo.customerCheck},#{bookingVo.paymentMethod},default,#{bookingVo.historyContent},#{bookingVo.historyMemo},default);
+		</if> -->
+			insert into booking2 values (default, #{bookingVo.pIdx}, #{bookingVo.bNumber}, #{bookingVo.mid}, #{bookingVo.name}, #{bookingVo.tel},#{bookingVo.bookingStartDate},#{bookingVo.bookingEndDate},default,#{bookingVo.customerCheck},#{bookingVo.paymentMethod}, 2,default,0,#{bookingVo.historyContent},#{bookingVo.historyMemo},default);
+	</insert>
+	
+	
+	<update id="setNoShowCntPlus">
+	  update booking2 set noShowCnt = noShowCnt + 1 where tel = #{tel};
+	</update>
+	
+	<update id="setUpdateNoShowCnt">
+	  update member2 set noShowCnt = #{noShowCnt} where idx = #{idx};
+	</update>
+	
+</mapper>

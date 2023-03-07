@@ -4,8 +4,8 @@
 	body {
 			margin: 0;
 			background-color: #fff;
-			font-family: Catamaran,sans-serif;
-	    font-size: 16px;
+			font-family: 'Noto Sans KR', sans-serif !important;
+			font-size: 16px;
 	    /* line-height: 1.625em; */
 	    /* font-weight: 400; */
 	    color: #6f6f6f;

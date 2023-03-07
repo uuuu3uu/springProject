@@ -3,8 +3,8 @@
 	body {
 		margin: 0;
 		background-color: #fff;
-		font-family: Catamaran,sans-serif;
-    font-size: 16px;
+		font-family: 'Noto Sans KR', sans-serif !important;
+		font-size: 16px;
     /* line-height: 1.625em; */
     /* font-weight: 400; */
     color: #6f6f6f;
@@ -16,8 +16,8 @@
 	}
 	.subMain {
 		width: 100%;
-		height: 180px;
-		background-color: #fafafa;
+		
+		
 	}
 	.header-top {
 		border-color: rgba(111,111,111,0.1);
@@ -51,8 +51,8 @@
 		border-bottom: 1px solid #000;	  
 	}
 	.subMain h1 {
-		font-family: Cormorant,serif;
-		/* letter-spacing: .01em; */
+		/* font-family: Cormorant,serif; */
+		letter-spacing: .01em; 
 		color: #363636;
 	  font-size: 54px;
 	  line-height: 1.07em;
@@ -64,7 +64,7 @@
 	  	margin: 100px 300px;
 	  }
 	.loginWrap h2 {
-		font-family: Cormorant,serif;
+		
     letter-spacing: .01em;
     color: #363636;
     font-size: 42px;
@@ -147,9 +147,51 @@
     margin: 25px 0;
 	}
 	
+	/* 예약메뉴 */
+	.bookingMenuWrap {
+		margin: 100px 250px;
+	}
+	
+	.gallery {
+		max-width: 1300px;
+		margin: 20px 5px;
+		display: flex;
+    flex-wrap: wrap;
+	}
+	
+	/* Content */
+	.content {
+	  background-color: white;
+	  width:340px;
+	  border-bottom: 1px solid #aaa;
+	  
+	  
+	}
+	.content img:hover {
+		opacity: 80%;
+		cursor: pointer;
+	} 
+	.pCategoryBox {
+		margin: 21px 0;
+	}
+	
+	.pMenuSubName {
+	  font-size: 24px;    
+	}
+	
+	.pMenuDetail {
+	
+	}
+	
 	/* 예약하기 */
 	.bookCheckWrap {
-		margin: 100px 300px;
+		margin: 100px 16%;
+		
+		border: 1px solid #eee;
+		border-radius: 6px;
+		max-width: 927px;
+		min-width: 490px;
+		padding: 30px 50px;
 	}
 	.bookCheckWrap h2 {
 		font-family: Cormorant,serif;
@@ -161,6 +203,151 @@
     margin: 25px 0;
 	}
 	
+	.subTitle {
+		margin: 20px 40px;
+	}
+	
+	.smallThumbLine {
+		margin: 5px 0px;
+		max-width: 400px;
+		text-align: center;
+	}
+	
+	.smallThumbLine:hover {
+		cursor: pointer;
+	}
+	
+	.datePick {
+  	width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    justify-content: center;
+  }
+  
+  .recentDate {
+  	width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    justify-content: center;
+  	color: #ccc;
+  }
+  
+ 
+  
+  
+  .datePick:hover {
+  	cursor: pointer;
+  	background-color: #eee;
+  }
+  .datePickClick {
+  	background-color: #6192b6;
+  	color: #fff;
+  }
+  
+  .bookCheck-col-inner {
+  	width: 390px;
+  }
+  
+  .hourPick {
+  	border-radius: 0.3em;
+  	border:none;
+  	background-color: #23272b;
+  	color: #fff;
+  	height: 35px;
+  	
+  }
+  
+  .hourPickNo {
+  	border-radius: 0.3em;
+  	border:none;
+  	background-color: #ccc;
+  	color:#fff;
+  	height: 35px;
+  	
+  }
+  .hourPickNo:hover {
+  	color:#fff;
+  	
+  }
+  
+  .hourPickClick {
+  	border-radius: 0.3em;
+  	border:none;
+  	background-color: #6192b6;
+  	height: 35px;
+  	
+  }
+  
+  .checkProductBox {
+  	border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 20px;
+    width: 390px;
+    margin-bottom: 30px;
+    
+  }
+  
+  .selectSubName {
+  	font-size: 18px;
+  	font-weight: bold;
+  	
+  }
+  .selectPrice {
+  	font-size: 18px;
+  	font-weight: bold;
+		color: #000;
+		text-align: right;
+  }
+  
+  .checkPaymentBox {
+  	border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .inputNo {
+  	border: none;
+  	background-color: #fff;
+  }
+  .rightPrice {
+  	text-align: right;
+  }
+  
+  .rightTime {
+  	text-align: right;
+  	padding-left: 30px;
+  }
+  
+  .paymentBox {
+  	width: 390px;	
+  }
+  
+  .checkProductBoxPrice {
+  	text-align: right;
+  	font-weight: bold;
+  	color: #000;
+  	
+  }
+  
+	.paymentType {
+		margin: 3px;
+		
+	}
+	
+	.paymentSmallTitle {
+		margin-bottom: 4px;
+		font-size: 14px;
+		
+	}
+	
+	/* 
 	.input-group input {
 		magin: 10px;
 	}
@@ -173,7 +360,7 @@
 	.input-group .btnOk {
 		top: 100px;
 		width: 300px;
-	}
+	} */
 	/* my account */
 	.myAccountWrap {
 		margin: 100px 300px;
@@ -210,7 +397,7 @@
     height: 120px;
     padding: 30px 0;
     border-radius: 50%;
-    border: 6px solid #fdb812;
+    border: 6px solid #d8628f;
     box-sizing: border-box;
     color: #222;
     text-align: center;
@@ -254,6 +441,23 @@
 	.form-group input {
 		margin: 7px;
 	}
+	
+	/* booking 예약페이지 */
+	.bookingCalendar {
+		border:1px solid #eee;
+		border-radius:10px;
+		padding:20px;
+	}
+	
+	.bookingCalendar table {
+		margin: 0px;
+	}
+	
+	.bookingCalendar_tr {
+		background-color:#eee
+		
+	}
+	
 	
 	/* 예약완료 페이지 */
 	.bookCheckFinishWrap {

@@ -16,6 +16,7 @@ create table notice (
 
 drop table notice;
 select * from notice order by idx desc;
+select * from notice;
 
 select *,(select name from member where mid=b.mid) as name ,(select tel from member where mid=b.mid) as tel
 						 ,(select pro1 from product where idx=b.pIdx) as pro1
